@@ -19,25 +19,42 @@ namespace TylerDM.OrangePeel
 
         foreach (var attribute in attributes)
         {
-          switch (attribute.ServiceLifetime)
-          {
-            case ServiceLifetime.Singleton:
-              services.AddSingleton(type);
-              foreach (var interfaceType in attribute.InterfaceTypes)
-                services.AddSingleton(interfaceType, type);
-              break;
-            case ServiceLifetime.Scoped:
-              services.AddScoped(type);
-              foreach (var interfaceType in attribute.InterfaceTypes)
-                services.AddScoped(interfaceType, type);
-              break;
-            case ServiceLifetime.Transient:
-              services.AddTransient(type);
-              foreach (var interfaceType in attribute.InterfaceTypes)
-                services.AddTransient(interfaceType, type);
-              break;
-          }
+          services.add(attribute.ServiceLifetime, type);
+          foreach (var interfaceType in attribute.InterfaceTypes)
+            services.add(attribute.ServiceLifetime, interfaceType, type);
         }
+      }
+    }
+
+    private static void add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type type)
+    {
+      switch (serviceLifetime)
+      {
+        case ServiceLifetime.Singleton:
+          services.AddSingleton(type);
+          break;
+        case ServiceLifetime.Scoped:
+          services.AddScoped(type);
+          break;
+        case ServiceLifetime.Transient:
+          services.AddTransient(type);
+          break;
+      }
+    }
+
+    private static void add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type interfaceType, Type concreteType)
+    {
+      switch (serviceLifetime)
+      {
+        case ServiceLifetime.Singleton:
+          services.AddSingleton(interfaceType, concreteType);
+          break;
+        case ServiceLifetime.Scoped:
+          services.AddScoped(interfaceType, concreteType);
+          break;
+        case ServiceLifetime.Transient:
+          services.AddTransient(interfaceType, concreteType);
+          break;
       }
     }
 
