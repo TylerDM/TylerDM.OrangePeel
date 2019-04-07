@@ -17,7 +17,7 @@ Next just call the extension method while building your `ServiceCollection`.
 serviceCollection.AddOrangePeeledServices();
 ```
 
-If you need to register the class with various interfaces, just reference the types in your constructor.
+If you need to register the class with various interfaces, just reference the types in your attribute constructor.
 ```C#
 [DependencyInjected(ServiceLifetime.Singleton, typeof(IEngine), typeof(IMachine))]
 public class BigEngine : IEngine, IMachine
