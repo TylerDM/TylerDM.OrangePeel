@@ -1,4 +1,4 @@
-# OrangePeel
+# Orange Peel
 Attribute-centric Dependency Injection helpers.
 
 If you're like me you've stopped at some point, looked at your thousands of lines of DI registrations, and thought that maybe it wasn't the best use of time.  Or you may have looked at them and thought, hey, these classes know what their lifetimes should be, why is that defined in a separate file?
