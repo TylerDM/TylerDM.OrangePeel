@@ -8,40 +8,45 @@ namespace TylerDM.OrangePeel
 {
   public static class IServiceCollectionExt
   {
+    private static bool alreadyRan = false;
+
     public static void AddOrangePeeledServices(this IServiceCollection services)
     {
       if (services == null) throw new ArgumentNullException(nameof(services));
 
-      foreach (var type in getAllTypesInAssembly())
+      if (alreadyRan) return;
+      alreadyRan = true;
+
+      foreach (var type in getAllTypesInDomain())
       {
-        var attributes = type.GetCustomAttributes<DependencyInjectedAttribute>();
+        var attributes = type.GetCustomAttributes<DependencyInjectableAttribute>();
         if (!attributes.Any()) continue;
 
-        foreach (var attribute in attributes)
-        {
-          switch (attribute.ServiceLifetime)
-          {
-            case ServiceLifetime.Singleton:
-              services.AddSingleton(type);
-              foreach (var interfaceType in attribute.InterfaceTypes)
-                services.AddSingleton(interfaceType, type);
-              break;
-            case ServiceLifetime.Scoped:
-              services.AddScoped(type);
-              foreach (var interfaceType in attribute.InterfaceTypes)
-                services.AddScoped(interfaceType, type);
-              break;
-            case ServiceLifetime.Transient:
-              services.AddTransient(type);
-              foreach (var interfaceType in attribute.InterfaceTypes)
-                services.AddTransient(interfaceType, type);
-              break;
-          }
-        }
+        var attribute = attributes.First();
+
+        services.Add(attribute.ServiceLifetime, type);
+        foreach (var interfaceType in attribute.InterfaceTypes)
+          services.Add(attribute.ServiceLifetime, type, interfaceType);
       }
     }
 
-    private static IEnumerable<Type> getAllTypesInAssembly()
+    public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType = null)
+    {
+      switch (serviceLifetime)
+      {
+        case ServiceLifetime.Singleton:
+          services.AddSingleton(interfaceType ?? service, service);
+          break;
+        case ServiceLifetime.Scoped:
+          services.AddScoped(interfaceType ?? service, service);
+          break;
+        case ServiceLifetime.Transient:
+          services.AddTransient(interfaceType ?? service, service);
+          break;
+      }
+    }
+
+    private static IEnumerable<Type> getAllTypesInDomain()
     {
       var assemblies = AppDomain.CurrentDomain.GetAssemblies();
       foreach (var assembly in assemblies)

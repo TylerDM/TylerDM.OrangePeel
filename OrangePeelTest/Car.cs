@@ -4,7 +4,7 @@ using TylerDM.OrangePeel;
 
 namespace OrangePeelTest
 {
-  [DependencyInjected(ServiceLifetime.Singleton)]
+  [DependencyInjectable(ServiceLifetime.Singleton)]
 	public class Car
 	{
 		private readonly IEngine _engine;
