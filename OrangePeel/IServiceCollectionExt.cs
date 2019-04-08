@@ -10,12 +10,15 @@ namespace TylerDM.OrangePeel
   {
     private static bool alreadyRan = false;
 
-    public static void AddOrangePeeledServices(this IServiceCollection services)
+    public static AddServicesResult AddOrangePeeledServices(this IServiceCollection services)
     {
       if (services == null) throw new ArgumentNullException(nameof(services));
 
-      if (alreadyRan) return;
+      if (alreadyRan) return new AddServicesResult(0, 0);
       alreadyRan = true;
+
+      var addedServices = 0;
+      var addedInterfaces = 0;
 
       foreach (var type in getAllTypesInDomain())
       {
@@ -23,11 +26,19 @@ namespace TylerDM.OrangePeel
         if (!attributes.Any()) continue;
 
         var attribute = attributes.First();
+        var serviceLifetime = attribute.ServiceLifetime;
+        
+        services.Add(serviceLifetime, type);
+        addedServices++;
 
-        services.Add(attribute.ServiceLifetime, type);
         foreach (var interfaceType in attribute.InterfaceTypes)
-          services.Add(attribute.ServiceLifetime, type, interfaceType);
+        {
+          services.Add(serviceLifetime, type, interfaceType);
+          addedInterfaces++;
+        }
       }
+
+      return new AddServicesResult(addedServices, addedInterfaces);
     }
 
     public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType = null)
