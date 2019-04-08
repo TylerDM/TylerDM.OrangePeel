@@ -5,7 +5,7 @@ If you're like me you've stopped at some point, looked at your thousands of line
 
 This project aims to, in the smallest way possible, solve these two issues. To start, define the DI configuration on your classes.
 ```C#
-[DependencyInjected(ServiceLifetime.Transient)]
+[DependencyInjectable(ServiceLifetime.Transient)]
 class Car
 {
   //...
@@ -19,7 +19,7 @@ serviceCollection.AddOrangePeeledServices();
 
 If you need to register the class with various interfaces, just reference the types in your attribute constructor.
 ```C#
-[DependencyInjected(ServiceLifetime.Singleton, typeof(IEngine), typeof(IMachine))]
+[DependencyInjectable(ServiceLifetime.Singleton, typeof(IEngine), typeof(IMachine))]
 class BigEngine : IEngine, IMachine
 {
   //...
