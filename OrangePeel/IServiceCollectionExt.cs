@@ -8,14 +8,9 @@ namespace TylerDM.OrangePeel
 {
   public static class IServiceCollectionExt
   {
-    private static bool alreadyRan = false;
-
     public static AddServicesResult AddOrangePeeledServices(this IServiceCollection services)
     {
       if (services == null) throw new ArgumentNullException(nameof(services));
-
-      if (alreadyRan) return new AddServicesResult(0, 0);
-      alreadyRan = true;
 
       var addedServices = 0;
       var addedInterfaces = 0;
@@ -43,6 +38,9 @@ namespace TylerDM.OrangePeel
 
     public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType = null)
     {
+      if (services == null) throw new ArgumentNullException(nameof(services));
+      if (service == null) throw new ArgumentNullException(nameof(service));
+
       switch (serviceLifetime)
       {
         case ServiceLifetime.Singleton:
