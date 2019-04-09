@@ -27,7 +27,7 @@ namespace TylerDM.OrangePeel
 
         var attribute = attributes.First();
         var serviceLifetime = attribute.ServiceLifetime;
-        
+
         services.Add(serviceLifetime, type);
         addedServices++;
 
