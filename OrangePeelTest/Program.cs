@@ -4,23 +4,23 @@ using TylerDM.OrangePeel;
 
 namespace OrangePeelTest
 {
-  class Program
-  {
-    static void Main(string[] args)
-    {
-      var serviceProvider = getServiceProvider();
-      var car = serviceProvider.GetRequiredService<Car>();
-      car.Start();
-      Console.ReadKey();
-    }
+	class Program
+	{
+		static void Main(string[] args)
+		{
+			var serviceProvider = getServiceProvider();
+			var car = serviceProvider.GetRequiredService<Car>();
+			car.Start();
+			Console.ReadKey();
+		}
 
-    private static IServiceProvider getServiceProvider()
-    {
-      var serviceCollection = new ServiceCollection();
+		private static IServiceProvider getServiceProvider()
+		{
+			var serviceCollection = new ServiceCollection();
 
-      serviceCollection.AddOrangePeeledServices();
+			serviceCollection.AddOrangePeeledServices();
 
-      return serviceCollection.BuildServiceProvider();
-    }
-  }
+			return serviceCollection.BuildServiceProvider();
+		}
+	}
 }
