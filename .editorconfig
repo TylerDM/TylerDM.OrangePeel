@@ -4,10 +4,6 @@
 [*]
 indent_style = tab
 
-# Xml files
-[*.xml]
-indent_size = 2
-
 [*.{cs,vb}]
 dotnet_naming_rule.private_members_with_underscore.symbols  = private_fields
 dotnet_naming_rule.private_members_with_underscore.style    = prefix_underscore
