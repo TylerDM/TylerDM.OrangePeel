@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace TylerDM.OrangePeel
@@ -23,8 +23,11 @@ namespace TylerDM.OrangePeel
 				var attribute = attributes.First();
 				var serviceLifetime = attribute.ServiceLifetime;
 
-				services.Add(serviceLifetime, type);
-				addedServices++;
+				if (!type.IsAbstract)
+				{
+					services.Add(serviceLifetime, type);
+					addedServices++;
+				}
 
 				foreach (var interfaceType in attribute.InterfaceTypes)
 				{
