@@ -23,16 +23,20 @@ namespace TylerDM.OrangePeel
 				var attribute = attributes.First();
 				var serviceLifetime = attribute.ServiceLifetime;
 
-				if (!type.IsAbstract)
+				if (attribute.InterfaceTypes.Any())
 				{
+					foreach (var interfaceType in attribute.InterfaceTypes)
+					{
+						services.Add(serviceLifetime, type, interfaceType);
+						addedInterfaces++;
+					}
+				}
+				else
+				{
+					if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".  Did you forget to include an interface?");
+
 					services.Add(serviceLifetime, type);
 					addedServices++;
-				}
-
-				foreach (var interfaceType in attribute.InterfaceTypes)
-				{
-					services.Add(serviceLifetime, type, interfaceType);
-					addedInterfaces++;
 				}
 			}
 
