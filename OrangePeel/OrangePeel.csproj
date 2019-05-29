@@ -5,7 +5,7 @@
     <RootNamespace>TylerDM.OrangePeel</RootNamespace>
     <AssemblyVersion>1.0.1.0</AssemblyVersion>
     <FileVersion>1.0.1.0</FileVersion>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <PackageProjectUrl>https://github.com/FireflyX/OrangePeel</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Dependency Injection</PackageTags>
