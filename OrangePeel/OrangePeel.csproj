@@ -10,6 +10,7 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Dependency Injection</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
