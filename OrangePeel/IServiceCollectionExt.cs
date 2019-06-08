@@ -25,11 +25,9 @@ namespace TylerDM.OrangePeel
 
 				if (attribute.InterfaceTypes.Any())
 				{
-					foreach (var interfaceType in attribute.InterfaceTypes)
-					{
-						services.Add(serviceLifetime, type, interfaceType);
-						addedInterfaces++;
-					}
+					var interfaceTypes = attribute.InterfaceTypes;
+					addedInterfaces += interfaceTypes.Count;
+					services.Add(serviceLifetime, type, interfaceTypes);
 				}
 				else
 				{
@@ -43,22 +41,37 @@ namespace TylerDM.OrangePeel
 			return new AddServicesResult(addedServices, addedInterfaces);
 		}
 
+		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, IEnumerable<Type> interfaceTypes)
+		{
+			if (services == null) throw new ArgumentNullException(nameof(services));
+			if (service == null) throw new ArgumentNullException(nameof(service));
+			if (interfaceTypes == null) throw new ArgumentNullException(nameof(interfaceTypes));
+
+			foreach (var interfaceType in interfaceTypes)
+				services.Add(serviceLifetime, service, interfaceType);
+		}
+
 		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType = null)
 		{
 			if (services == null) throw new ArgumentNullException(nameof(services));
 			if (service == null) throw new ArgumentNullException(nameof(service));
 
+			interfaceType = interfaceType ?? service;
+
 			switch (serviceLifetime)
 			{
 				case ServiceLifetime.Singleton:
-					services.AddSingleton(interfaceType ?? service, service);
+					services.AddSingleton(interfaceType, x => x.GetRequiredService(service));
 					break;
 				case ServiceLifetime.Scoped:
-					services.AddScoped(interfaceType ?? service, service);
+					services.AddScoped(interfaceType, x => x.GetRequiredService(service));
 					break;
 				case ServiceLifetime.Transient:
-					services.AddTransient(interfaceType ?? service, service);
+					services.AddTransient(interfaceType, x => x.GetRequiredService(service));
 					break;
+
+				default:
+					throw new ArgumentOutOfRangeException(nameof(serviceLifetime));
 			}
 		}
 
