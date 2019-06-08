@@ -23,18 +23,16 @@ namespace TylerDM.OrangePeel
 				var attribute = attributes.First();
 				var serviceLifetime = attribute.ServiceLifetime;
 
+				if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".  Did you forget to include an interface?");
+
+				services.Add(serviceLifetime, type);
+				addedServices++;
+
 				if (attribute.InterfaceTypes.Any())
 				{
 					var interfaceTypes = attribute.InterfaceTypes;
 					addedInterfaces += interfaceTypes.Count;
 					services.Add(serviceLifetime, type, interfaceTypes);
-				}
-				else
-				{
-					if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".  Did you forget to include an interface?");
-
-					services.Add(serviceLifetime, type);
-					addedServices++;
 				}
 			}
 
@@ -51,7 +49,29 @@ namespace TylerDM.OrangePeel
 				services.Add(serviceLifetime, service, interfaceType);
 		}
 
-		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType = null)
+		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service)
+		{
+			if (services == null) throw new ArgumentNullException(nameof(services));
+			if (service == null) throw new ArgumentNullException(nameof(service));
+
+			switch (serviceLifetime)
+			{
+				case ServiceLifetime.Singleton:
+					services.AddSingleton(service);
+					break;
+				case ServiceLifetime.Scoped:
+					services.AddScoped(service);
+					break;
+				case ServiceLifetime.Transient:
+					services.AddTransient(service);
+					break;
+
+				default:
+					throw new ArgumentOutOfRangeException(nameof(serviceLifetime));
+			}
+		}
+
+		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType)
 		{
 			if (services == null) throw new ArgumentNullException(nameof(services));
 			if (service == null) throw new ArgumentNullException(nameof(service));
