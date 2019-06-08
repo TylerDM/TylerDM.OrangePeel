@@ -3,6 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>TylerDM.OrangePeel</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Tyler M</Authors>
+    <PackageId>OrangePeel</PackageId>
+    <Product>Orange Peel</Product>
+    <Description>Attribute-centric Dependency Injection helpers.</Description>
+    <PackageProjectUrl>https://github.com/FireflyX/OrangePeel</PackageProjectUrl>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
