@@ -1,65 +1,76 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace TylerDM.OrangePeel
 {
-  public static class IServiceCollectionExt
-  {
-    public static void AddOrangePeeledServices(this IServiceCollection services)
-    {
-      if (services == null) throw new ArgumentNullException(nameof(services));
+	public static class IServiceCollectionExt
+	{
+		public static AddServicesResult AddOrangePeeledServices(this IServiceCollection services)
+		{
+			if (services == null) throw new ArgumentNullException(nameof(services));
 
-      foreach (var type in getAllTypesInAssembly())
-      {
-        var attributes = type.GetCustomAttributes<DependencyInjectedAttribute>();
-        if (!attributes.Any()) continue;
+			var addedServices = 0;
+			var addedInterfaces = 0;
 
-        foreach (var attribute in attributes)
-        {
-          services.add(attribute.ServiceLifetime, type);
-          services.add(attribute.ServiceLifetime, type, attribute.InterfaceTypes);
-        }
-      }
-    }
+			foreach (var type in getAllTypesInDomain())
+			{
+				var attributes = type.GetCustomAttributes<DependencyInjectableAttribute>();
+				if (!attributes.Any()) continue;
 
-    private static void add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type concreteType, IEnumerable<Type> interfaceTypes)
-    {
-      foreach (var interfaceType in interfaceTypes)
-        services.add(serviceLifetime, concreteType, interfaceType);
-    }
+				var attribute = attributes.First();
+				var serviceLifetime = attribute.ServiceLifetime;
 
-    private static void add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type concreteType, Type interfaceType = null)
-    {
-      interfaceType = interfaceType ?? concreteType;
+				if (attribute.InterfaceTypes.Any())
+				{
+					foreach (var interfaceType in attribute.InterfaceTypes)
+					{
+						services.Add(serviceLifetime, type, interfaceType);
+						addedInterfaces++;
+					}
+				}
+				else
+				{
+					if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".  Did you forget to include an interface?");
 
-      switch (serviceLifetime)
-      {
-        case ServiceLifetime.Singleton:
-          services.AddSingleton(interfaceType, x => x.GetService(concreteType));
-          break;
-        case ServiceLifetime.Scoped:
-          services.AddScoped(interfaceType, x => x.GetService(concreteType));
-          break;
-        case ServiceLifetime.Transient:
-          services.AddTransient(interfaceType, x => x.GetService(concreteType));
-          break;
-        default:
-          throw new ArgumentOutOfRangeException(nameof(serviceLifetime));
-      }
-    }
+					services.Add(serviceLifetime, type);
+					addedServices++;
+				}
+			}
 
-    private static IEnumerable<Type> getAllTypesInAssembly()
-    {
-      var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-      foreach (var assembly in assemblies)
-      {
-        var types = assembly.GetTypes();
-        foreach (var type in types)
-          yield return type;
-      }
-    }
-  }
+			return new AddServicesResult(addedServices, addedInterfaces);
+		}
+
+		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType = null)
+		{
+			if (services == null) throw new ArgumentNullException(nameof(services));
+			if (service == null) throw new ArgumentNullException(nameof(service));
+
+			switch (serviceLifetime)
+			{
+				case ServiceLifetime.Singleton:
+					services.AddSingleton(interfaceType ?? service, service);
+					break;
+				case ServiceLifetime.Scoped:
+					services.AddScoped(interfaceType ?? service, service);
+					break;
+				case ServiceLifetime.Transient:
+					services.AddTransient(interfaceType ?? service, service);
+					break;
+			}
+		}
+
+		private static IEnumerable<Type> getAllTypesInDomain()
+		{
+			var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+			foreach (var assembly in assemblies)
+			{
+				var types = assembly.GetTypes();
+				foreach (var type in types)
+					yield return type;
+			}
+		}
+	}
 }
