@@ -25,7 +25,7 @@ namespace TylerDM.OrangePeel
 				var attribute = attributes.First();
 				var serviceLifetime = attribute.ServiceLifetime;
 
-				if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".  Did you forget to include an interface?");
+				if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".");
 
 				services.Add(serviceLifetime, type);
 				addedServices++;
@@ -76,9 +76,7 @@ namespace TylerDM.OrangePeel
 		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType)
 		{
 			if (services == null) throw new ArgumentNullException(nameof(services));
-			if (service == null) throw new ArgumentNullException(nameof(service));
-
-			interfaceType = interfaceType ?? service;
+			interfaceType ??= service ?? throw new ArgumentNullException(nameof(service));
 
 			switch (serviceLifetime)
 			{
@@ -86,10 +84,10 @@ namespace TylerDM.OrangePeel
 					services.AddSingleton(interfaceType, x => x.GetRequiredService(service));
 					break;
 				case ServiceLifetime.Scoped:
-					services.AddScoped(interfaceType, x => x.GetRequiredService(service));
+					services.AddScoped(interfaceType, service);
 					break;
 				case ServiceLifetime.Transient:
-					services.AddTransient(interfaceType, x => x.GetRequiredService(service));
+					services.AddTransient(interfaceType, service);
 					break;
 
 				default:
