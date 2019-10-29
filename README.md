@@ -8,7 +8,7 @@ This project aims to, in the smallest way possible, solve these two issues. To s
 [DependencyInjectable(ServiceLifetime.Transient)]
 class Car
 {
-  //...
+	//...
 }
 ```
 
@@ -25,7 +25,7 @@ If you need to register the class with various interfaces, just reference the ty
 [DependencyInjectable(ServiceLifetime.Singleton, typeof(IEngine), typeof(IMachine))]
 class BigEngine : IEngine, IMachine
 {
-  //...
+	//...
 }
 ```
 `params` is used here so you can add as many as you want easily.
