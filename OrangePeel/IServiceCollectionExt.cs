@@ -16,8 +16,8 @@ namespace TylerDM.OrangePeel
 			var addedInterfaces = 0;
 
 			//This must execute here and CANNOT be moved into getTypesFromCallingAssembly() as then the calling assembly would be itself.
-			var callingAssembly = Assembly.GetCallingAssembly();
-			foreach (var type in getTypesFromCallingAssembly(callingAssembly))
+			var typesFromCallingAssembly = Assembly.GetCallingAssembly().GetTypes();
+			foreach (var type in typesFromCallingAssembly)
 			{
 				var attributes = type.GetCustomAttributes<DependencyInjectableAttribute>();
 				if (!attributes.Any()) continue;
@@ -93,13 +93,6 @@ namespace TylerDM.OrangePeel
 				default:
 					throw new ArgumentOutOfRangeException(nameof(serviceLifetime));
 			}
-		}
-
-		private static IEnumerable<Type> getTypesFromCallingAssembly(Assembly callingAssembly)
-		{
-			var types = callingAssembly.GetTypes();
-			foreach (var type in types)
-				yield return type;
 		}
 	}
 }
