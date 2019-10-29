@@ -73,7 +73,7 @@ namespace TylerDM.OrangePeel
 			}
 		}
 
-		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type interfaceType)
+		public static void Add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, Type? interfaceType)
 		{
 			if (services == null) throw new ArgumentNullException(nameof(services));
 			interfaceType ??= service ?? throw new ArgumentNullException(nameof(service));
