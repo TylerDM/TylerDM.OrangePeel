@@ -12,12 +12,15 @@ class Car
 }
 ```
 
-Next just call the extension method while building your `ServiceCollection`.
+Next just call the extension method while building your `ServiceCollection`.  This must be done by each assembly which uses Orange Peel.
 ```C#
-serviceCollection.AddOrangePeeledServices();
+class MyLibraryStartup
+{
+	serviceCollection.AddOrangePeeledServices();
+}
 ```
 
-If you need to register the class with various interfaces, just reference the types in your attribute constructor.
+If you need to register the class with various interfaces, just reference the types in your attribute's constructor.
 ```C#
 [DependencyInjectable(ServiceLifetime.Singleton, typeof(IEngine), typeof(IMachine))]
 class BigEngine : IEngine, IMachine
