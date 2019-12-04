@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace TylerDM.OrangePeel
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-	public class DependencyInjectableAttribute : Attribute
+	public sealed class DependencyInjectableAttribute : Attribute
 	{
 		public ServiceLifetime ServiceLifetime { get; }
 		public IReadOnlyCollection<Type> InterfaceTypes { get; }
