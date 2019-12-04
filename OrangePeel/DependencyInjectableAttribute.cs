@@ -13,7 +13,7 @@ namespace TylerDM.OrangePeel
 		public DependencyInjectableAttribute(ServiceLifetime serviceLifetime)
 		{
 			ServiceLifetime = serviceLifetime;
-			InterfaceTypes = new Type[0];
+			InterfaceTypes = Array.Empty<Type>();
 		}
 
 		public DependencyInjectableAttribute(ServiceLifetime serviceLifetime, params Type[] interfaceTypes)
