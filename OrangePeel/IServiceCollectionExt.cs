@@ -38,10 +38,10 @@ namespace TylerDM.OrangePeel
 				var attributes = type.GetCustomAttributes<DependencyInjectableAttribute>();
 				if (!attributes.Any()) continue;
 
+				if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".");
+
 				var attribute = attributes.First();
 				var serviceLifetime = attribute.ServiceLifetime;
-
-				if (type.IsAbstract) throw new Exception($"Cannot register abstract class \"{type.FullName}\".");
 
 				services.add(serviceLifetime, type);
 				addedServices++;
