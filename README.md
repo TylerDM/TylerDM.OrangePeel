@@ -14,9 +14,12 @@ class Car
 
 Next just call the extension method while building your `ServiceCollection`.  This must be done by each assembly which uses Orange Peel.
 ```C#
-class MyLibraryStartup
+public static class MyLibraryStartup
 {
-	serviceCollection.AddOrangePeeledServices();
+	public static void AddMyLibrary(this IServiceCollection services)
+	{
+		services.AddOrangePeeledServices();
+	}
 }
 ```
 
