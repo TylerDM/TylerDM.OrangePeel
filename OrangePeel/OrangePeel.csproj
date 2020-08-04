@@ -5,7 +5,7 @@
     <RootNamespace>TylerDM.OrangePeel</RootNamespace>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
-    <Version>1.3.1</Version>
+    <Version>1.4.1</Version>
     <PackageProjectUrl>https://github.com/TylerDM/OrangePeel</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Dependency Injection</PackageTags>
