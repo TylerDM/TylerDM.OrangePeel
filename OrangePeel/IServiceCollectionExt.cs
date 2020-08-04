@@ -22,7 +22,7 @@ namespace TylerDM.OrangePeel
 			var callingAssemblyName = callingAssembly.FullName ?? throw new Exception("Assembly name not found.");
 			lock (_orangePeeledAssemblies)
 			{
-				if (_orangePeeledAssemblies.Contains(callingAssemblyName)) return new AddServicesResult(0, 0);
+				if (_orangePeeledAssemblies.Contains(callingAssemblyName)) return AddServicesResult.Empty;
 				_orangePeeledAssemblies.Add(callingAssemblyName);
 			}
 
