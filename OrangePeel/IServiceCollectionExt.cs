@@ -18,7 +18,7 @@ namespace TylerDM.OrangePeel
 			//This must execute here and CANNOT be moved into a different method as then the calling assembly would be Orange Peel itself.
 			var callingAssembly = Assembly.GetCallingAssembly();
 
-			//Make sure we orangle peel any given assembly only once.
+			//Make sure we orange peel any given assembly only once.
 			var callingAssemblyName = callingAssembly.FullName ?? throw new Exception("Assembly name not found.");
 			lock (_orangePeeledAssemblies)
 			{
