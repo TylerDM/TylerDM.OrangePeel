@@ -16,24 +16,24 @@ namespace TylerDM.OrangePeel
 			if (services == null) throw new ArgumentNullException(nameof(services));
 
 			//This must execute here and CANNOT be moved into a different method as then the calling assembly would be Orange Peel itself.
-			var callingAssembly = Assembly.GetCallingAssembly();
+			var assembly = Assembly.GetCallingAssembly();
 
 			//Make sure we orange peel any given assembly only once.
-			var callingAssemblyName = callingAssembly.FullName ?? throw new Exception("Assembly name not found.");
+			var callingAssemblyName = assembly.FullName ?? throw new Exception("Assembly name not found.");
 			lock (_orangePeeledAssemblies)
 			{
 				if (_orangePeeledAssemblies.Contains(callingAssemblyName)) return AddServicesResult.Empty;
 				_orangePeeledAssemblies.Add(callingAssemblyName);
 			}
 
-			return services.addAllTypesFromAssembly(callingAssembly);
+			return services.addAllTypesFromAssembly(assembly);
 		}
 
 		private static AddServicesResult addAllTypesFromAssembly(this IServiceCollection services, Assembly assembly)
 		{
 			var addedServices = 0;
 			var addedInterfaces = 0;
-			foreach (var type in assembly.GetTypes())
+			foreach (var type in getTypesSafely(assembly))
 			{
 				var attributes = type.GetCustomAttributes<DependencyInjectableAttribute>();
 				if (!attributes.Any()) continue;
@@ -55,6 +55,20 @@ namespace TylerDM.OrangePeel
 			}
 
 			return new AddServicesResult(addedServices, addedInterfaces);
+		}
+
+		private static IEnumerable<Type> getTypesSafely(Assembly assembly)
+		{
+			//Less dependencies are loaded in Load() and LoadFrom().
+			assembly = Assembly.LoadFrom(assembly.Location);
+			try
+			{
+				return assembly.GetTypes();
+			}
+			catch (ReflectionTypeLoadException exception)
+			{
+				return exception.Types.Where(x => x != null);
+			}
 		}
 
 		private static void add(this IServiceCollection services, ServiceLifetime serviceLifetime, Type service, IEnumerable<Type> interfaceTypes)
