@@ -13,8 +13,6 @@ namespace TylerDM.OrangePeel
 
 		public static AddServicesResult AddOrangePeeledServices(this IServiceCollection services)
 		{
-			if (services == null) throw new ArgumentNullException(nameof(services));
-
 			//This must execute here and CANNOT be moved into a different method as then the calling assembly would be Orange Peel itself.
 			var assembly = Assembly.GetCallingAssembly();
 
@@ -22,7 +20,7 @@ namespace TylerDM.OrangePeel
 			var callingAssemblyName = assembly.FullName ?? throw new Exception("Assembly name not found.");
 			lock (_orangePeeledAssemblies)
 			{
-				if (_orangePeeledAssemblies.Contains(callingAssemblyName)) return AddServicesResult.Empty;
+				if (_orangePeeledAssemblies.Contains(callingAssemblyName)) return new(0, 0);
 				_orangePeeledAssemblies.Add(callingAssemblyName);
 			}
 
@@ -60,14 +58,14 @@ namespace TylerDM.OrangePeel
 		private static IEnumerable<Type> getTypesSafely(Assembly assembly)
 		{
 			//Less dependencies are loaded in Load() and LoadFrom().
-			assembly = Assembly.LoadFrom(assembly.Location);
+			assembly = Assembly.Load(assembly.GetName());
 			try
 			{
 				return assembly.GetTypes();
 			}
 			catch (ReflectionTypeLoadException exception)
 			{
-				return exception.Types.Where(x => x != null);
+				return exception.Types.OfType<Type>();
 			}
 		}
 
