@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>TylerDM.OrangePeel</RootNamespace>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
-    <Version>1.4.1</Version>
+    <Version>1.5.0</Version>
     <PackageProjectUrl>https://github.com/TylerDM/OrangePeel</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Dependency Injection</PackageTags>
