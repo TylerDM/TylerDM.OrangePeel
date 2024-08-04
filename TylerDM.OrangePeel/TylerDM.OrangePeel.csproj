@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>TylerDM.OrangePeel</RootNamespace>
-    <Version>1.7.0</Version>
+    <Version>1.7.1</Version>
     <PackageProjectUrl>https://github.com/TylerDM/OrangePeel</PackageProjectUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Dependency Injection</PackageTags>
