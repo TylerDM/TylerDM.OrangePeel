@@ -1,4 +1,4 @@
-﻿namespace TylerDM.OrangePeel.Tests.Tools;
+﻿namespace TylerDM.OrangePeel.Tests;
 
 public static class ServiceCollectionBuilder
 {
