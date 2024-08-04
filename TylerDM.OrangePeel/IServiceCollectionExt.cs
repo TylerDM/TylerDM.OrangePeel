@@ -13,6 +13,13 @@ public static class IServiceCollectionExt
 
 		//This must execute here and CANNOT be moved into a different method as then the calling assembly would be Orange Peel itself.
 		var assembly = Assembly.GetCallingAssembly();
+		return services.AddOrangePeeledServices(assembly);
+	}
+
+	public static IReadOnlyCollection<ServiceDescriptor> AddOrangePeeledServices(this IServiceCollection services, Assembly assembly)
+	{
+		ArgumentNullException.ThrowIfNull(services);
+		ArgumentNullException.ThrowIfNull(assembly);
 
 		//Make sure we orange peel any given assembly only once.
 		lock (_orangePeeledAssemblies)
