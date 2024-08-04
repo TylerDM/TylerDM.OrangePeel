@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace TylerDM.OrangePeel.Tests;
+﻿namespace TylerDM.OrangePeel.Tests;
 
 public static class Tests
 {
