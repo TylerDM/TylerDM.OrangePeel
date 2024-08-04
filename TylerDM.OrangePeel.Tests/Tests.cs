@@ -41,4 +41,12 @@ public static class Tests
 
 		var serviceB = _serviceProvider.GetRequiredService<ServiceB>();
 	}
+
+	[Test]
+	public static void PreventDoubleRegistration()
+	{
+		var descriptors = _serviceCollection.AddOrangePeeledServices();
+		if (descriptors.Count > 0)
+			throw new Exception($"Assembly was Orange Peeled twice.");
+	}
 }
