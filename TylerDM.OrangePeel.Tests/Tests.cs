@@ -13,12 +13,6 @@ public static class Tests
 	}
 
 	[Test]
-	public static void Fail()
-	{
-		throw new Exception("This test fails to make sure I know how to prevent release on test failure.");
-	}
-
-	[Test]
 	public static void LifetimeAccurary()
 	{
 		var descriptorB = _serviceCollection.First(x => x.ServiceType == typeof(ServiceB));
