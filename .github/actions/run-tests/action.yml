@@ -1,10 +1,5 @@
-name: nuget-publish
-description: "Publish package to Nuget."
-
-inputs:
-  nuget-api-key: 
-    description: "The Nuget API key to use."
-    required: true
+name: run-tests
+description: "Runs tests."
 
 runs:
   using: composite
@@ -27,15 +22,4 @@ runs:
 
     - name: Run tests
       run: dotnet test --no-restore --configuration Release --logger trx --results-directory ./test-results
-      continue-on-error: false
-      shell: bash
-
-    - name: Pack project
-      run: dotnet pack --configuration Release --no-build --output ./nupkg 
-      shell: bash
-
-    - name: Publish to NuGet
-      env:
-        NUGET_API_KEY: ${{ inputs.nuget-api-key }}
-      run: dotnet nuget push "./nupkg/*.nupkg" --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
       shell: bash
