@@ -3,7 +3,7 @@ name: Publish on push to Master.
 on:
   push:
     branches:
-      - master
+      - release
 
 jobs:
   publish:
