@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Call Composite Action
+      - name: Publish
         uses: ./.github/actions/nuget-publish
         with:
           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
