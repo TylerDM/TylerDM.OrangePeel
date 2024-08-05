@@ -13,11 +13,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: '0'
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0'
+
+      - name: Install Nerdbank.GitVersioning tool
+        run: dotnet tool install -g nbgv
+
+      - name: Use Nerdbank.GitVersioning to set version
+        run: nbgv install
 
       - name: Restore dependencies
         run: dotnet restore
