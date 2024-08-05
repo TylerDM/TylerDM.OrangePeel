@@ -16,3 +16,5 @@ jobs:
 
       - name: Call Composite Action
         uses: ./.github/actions/nuget-publish
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}

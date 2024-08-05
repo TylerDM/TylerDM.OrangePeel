@@ -2,17 +2,16 @@ name: publish
 description: "Publish package to Nuget."
 
 inputs:
-  branch:
-    description: 'The branch to publish from.'
+  nuget-api-key: 
+    description: "The Nuget API key to use."
     required: true
-    default: "master"
 
 runs:
   using: composite
   steps:
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: "8.0.x"
 
     - name: Install NBGV
       run: dotnet tool install -g nbgv
@@ -37,6 +36,6 @@ runs:
 
     - name: Publish to NuGet
       env:
-        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        NUGET_API_KEY: ${{ inputs.nuget-api-key }}
       run: dotnet nuget push "./nupkg/*.nupkg" --api-key $NUGET_API_KEY --source https://api.nuget.org/v3/index.json
       shell: bash
