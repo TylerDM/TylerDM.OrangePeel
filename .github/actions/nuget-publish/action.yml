@@ -10,10 +10,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: '0'
-        ref: ${{ inputs.branch }}
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '8.0.x'
