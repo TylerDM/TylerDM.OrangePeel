@@ -33,4 +33,4 @@ class BigEngine : IEngine, IMachine
 ```
 `params` is used here so you can add as many as you want easily.
 
-[Nuget](https://www.nuget.org/packages/OrangePeel)
+[Nuget](https://www.nuget.org/packages/TylerDM.OrangePeel)
