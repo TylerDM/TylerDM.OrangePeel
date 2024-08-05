@@ -25,11 +25,6 @@ runs:
       run: dotnet build --configuration Release --no-restore
       shell: bash
 
-    - name: Run tests
-      run: dotnet test --no-restore --configuration Release --logger trx --results-directory ./test-results
-      continue-on-error: false
-      shell: bash
-
     - name: Pack project
       run: dotnet pack --configuration Release --no-build --output ./nupkg 
       shell: bash

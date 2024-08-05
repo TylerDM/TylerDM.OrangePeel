@@ -13,22 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-         fetch-depth: '0'
+          fetch-depth: '0'
 
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
-
-      - name: Install NBGV
-        run: dotnet tool install -g nbgv
-        shell: bash
-        
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build project
-        run: dotnet build --configuration Release --no-restore
-
-      - name: Run tests
-        run: dotnet test --no-restore --configuration Release --no-build --logger trx 
+      - name: Test
+        uses: ./.github/actions/run-tests
