@@ -1,0 +1,14 @@
+name: Publish on push to Master.
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Composite Action
+        uses: ./.github/actions/nuget-publish

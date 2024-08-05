@@ -1,0 +1,8 @@
+{
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-action.json": [
+            "file:///x%3A/Repositories/OrangePeel/.github/actions/publish/action.yml",
+            "file:///x%3A/Repositories/OrangePeel/.github/workflows/composites/publish.yml"
+        ]
+    }
+}
