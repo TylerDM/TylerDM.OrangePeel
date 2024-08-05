@@ -24,16 +24,6 @@ jobs:
       - name: Install Nerdbank.GitVersioning tool
         run: dotnet tool install -g nbgv
 
-      - name: Use Nerdbank.GitVersioning to get version
-        id: nbgv
-        run: nbgv get-version --format json > version.json
-
-      - name: Read version from file
-        id: read_version
-        run: |
-          version=$(jq -r '.Version' version.json)
-          echo "::set-output name=version::$version"
-
       - name: Restore dependencies
         run: dotnet restore
 
@@ -45,7 +35,7 @@ jobs:
         continue-on-error: false
 
       - name: Pack project
-        run: dotnet pack --configuration Release /p:PackageVersion=${{ steps.read_version.outputs.version }} --no-build --output ./nupkg 
+        run: dotnet pack --configuration Release --no-build --output ./nupkg 
 
       - name: Publish to NuGet
         env:
