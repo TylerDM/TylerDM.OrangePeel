@@ -3,7 +3,7 @@ name: Publish on push to main.
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
