@@ -12,7 +12,7 @@ public static class Tests
 		_serviceProvider = _serviceCollection.BuildServiceProvider();
 	}
 
-	[Test]
+	[Fact]
 	public static void LifetimeAccurary()
 	{
 		var descriptorB = _serviceCollection.First(x => x.ServiceType == typeof(ServiceB));
@@ -24,7 +24,7 @@ public static class Tests
 			throw new Exception($"{nameof(ServiceA)} through {nameof(IInterfaceA)} has incorrect lifetime.");
 	}
 
-	[Test]
+	[Fact]
 	public static void AdditionalTypes()
 	{
 		var descriptorA = _serviceCollection.First(x => x.ServiceType == typeof(IInterfaceA));
@@ -32,7 +32,7 @@ public static class Tests
 			throw new Exception($"{nameof(ServiceA)} was not registered as {nameof(IInterfaceA)}");
 	}
 
-	[Test]
+	[Fact]
 	public static void Materialization()
 	{
 		var interfaceA = _serviceProvider.GetRequiredService<IInterfaceA>();
@@ -42,7 +42,7 @@ public static class Tests
 		var serviceB = _serviceProvider.GetRequiredService<ServiceB>();
 	}
 
-	[Test]
+	[Fact]
 	public static void PreventDoubleRegistration()
 	{
 		var descriptors = _serviceCollection.AddOrangePeeledServices();
