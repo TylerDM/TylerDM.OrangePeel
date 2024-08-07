@@ -1,37 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <RootNamespace>TylerDM.OrangePeel</RootNamespace>
-		<VersionPrefix>$(GitVersion_NuGetVersionV2)</VersionPrefix>
-		<Version>$(GitVersion_NuGetVersionV2)</Version>
-    <PackageProjectUrl>https://github.com/TylerDM/OrangePeel</PackageProjectUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageTags>Dependency Injection</PackageTags>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
-		<LangVersion>latest</LangVersion>
-		<Nullable>enable</Nullable>
-		<WarningsAsErrors>
-			CS8600;
-			CS8602;
-			CS8603;
-			CS8625;
-			CS8619;
-			CS8618;
-			CS8601;
-			AD0001;<!-- Nullable reference types may be null. -->
-			CS8604;<!-- Possible null reference argument. -->
-			CS8629;<!-- Nullable value type may be null. -->
-			CS8653;<!-- A default expression introduces a null value for a type parameter when T is a class. -->
-			CS8613;<!-- Nullability of reference types in return type doesn't match implicitly implemented member. -->
-			CS8714;<!-- The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint. -->
-			CS8609;<!-- Nullability of reference types in return type doesn't match overridden member. -->
-			CS8605;<!-- Unboxing a possibly null value. -->
-			CS8597;<!-- Thrown value may be null. -->
-		</WarningsAsErrors>
+	<PropertyGroup>
+		<IsPackable>true</IsPackable>
+		<Version>1.9.6</Version>
+		<RepositoryType>Git</RepositoryType>
+		<NeutralLanguage>en-US</NeutralLanguage>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-  </PropertyGroup>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
