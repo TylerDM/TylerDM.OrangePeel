@@ -3,7 +3,7 @@
 public static class IServiceCollectionExt
 {
 	#region fields
-	private static readonly List<Assembly> _orangePeeledAssemblies = [];
+	private static readonly ConcurrentBag<Assembly> _orangePeeledAssemblies = [];
 	#endregion
 
 	#region methods
@@ -26,9 +26,9 @@ public static class IServiceCollectionExt
 		{
 			if (_orangePeeledAssemblies.Contains(assembly)) return [];
 			_orangePeeledAssemblies.Add(assembly);
-		}
 
-		return services.addAll(assembly);
+			return services.addAll(assembly);
+		}
 	}
 	#endregion
 
