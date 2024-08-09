@@ -36,39 +36,45 @@ public static class IServiceCollectionExt
 	private static List<ServiceDescriptor> addAll(this IServiceCollection services, Assembly assembly)
 	{
 		var list = new List<ServiceDescriptor>();
-		foreach (var (serviceType, attribute) in getServiceTypes(assembly))
+		foreach (var implementationType in assembly.getConcreteClasses())
 		{
-			if (serviceType.IsAbstract)
-				throw new Exception($"Cannot register abstract class {serviceType.FullName}.");
+			var directAttribute = implementationType.getAttribute();
+			if (directAttribute is not null)
+			{
+				var lifetime = directAttribute.ServiceLifetime;
+				list.Add(services.add(lifetime, implementationType));
+				foreach (var interfaceType in directAttribute.AdditionalInterfaces)
+					list.Add(services.add(lifetime, implementationType, interfaceType));
+			}
 
-			list.AddRange(services.add(serviceType, attribute));
+			foreach (var interfaceType in implementationType.getPotentialInterfaceTypes())
+			{
+				var interfaceAttribute = interfaceType.getAttribute();
+				if (interfaceAttribute is null) continue;
+
+				var lifetime = directAttribute?.ServiceLifetime ?? interfaceAttribute.ServiceLifetime;
+				list.Add(services.add(lifetime, implementationType, interfaceType));
+				foreach (var additionalInterface in interfaceAttribute.AdditionalInterfaces)
+					list.Add(services.add(lifetime, implementationType, additionalInterface));
+			}
 		}
 		return list;
 	}
 
-	private static List<ServiceDescriptor> add(this IServiceCollection services, Type implementationType, DependencyInjectableAttribute attribute)
+	private static IEnumerable<Type> getConcreteClasses(this Assembly assembly) =>
+		assembly.GetTypes().Where(x => x.IsClass && x.IsAbstract == false);
+
+	private static DependencyInjectableAttribute? getAttribute(this Type type) =>
+		type.GetCustomAttribute<DependencyInjectableAttribute>(false);
+
+	private static IEnumerable<Type> getPotentialInterfaceTypes(this Type type) =>
+		type.SelectFollow(x => x.BaseType).Concat(type.GetInterfaces());
+
+	private static ServiceDescriptor add(this IServiceCollection services, ServiceLifetime lifetime, Type implementationType, Type? interfaceType = null)
 	{
-		var list = new List<ServiceDescriptor>(1 + attribute.ServiceTypes.Count);
-		var lifetime = attribute.ServiceLifetime;
+		interfaceType ??= implementationType;
 
-		list.Add(services.add(lifetime, implementationType));
-		foreach (var serviceType in attribute.ServiceTypes)
-			list.Add(services.add(lifetime, implementationType, serviceType));
-
-		return list;
-	}
-
-	private static IEnumerable<(Type ServiceType, DependencyInjectableAttribute Attribute)> getServiceTypes(Assembly assembly) =>
-		from type in assembly.GetTypes()
-		let attribute = type.GetCustomAttributes<DependencyInjectableAttribute>().FirstOrDefault()
-		where attribute is not null
-		select (type, attribute);
-
-	private static ServiceDescriptor add(this IServiceCollection services, ServiceLifetime lifetime, Type implementationType, Type? serviceType = null)
-	{
-		serviceType ??= implementationType;
-
-		var descriptor = new ServiceDescriptor(serviceType, implementationType, lifetime);
+		var descriptor = new ServiceDescriptor(interfaceType, implementationType, lifetime);
 		services.Add(descriptor);
 		return descriptor;
 	}

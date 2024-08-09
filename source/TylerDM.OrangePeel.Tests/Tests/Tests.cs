@@ -13,6 +13,14 @@ public static class Tests
 	}
 
 	[Fact]
+	public static void NoMissedRegistrations()
+	{
+		var descriptors = _serviceCollection.Where(x => x.ImplementationType == typeof(ImplementationClassC));
+		if (descriptors.Count() != 3)
+			throw new Exception($"{nameof(ImplementationClassC)} has the wrong number of registrations.");
+	}
+
+	[Fact]
 	public static void LifetimeAccurary()
 	{
 		var descriptorB = _serviceCollection.First(x => x.ServiceType == typeof(ServiceB));
@@ -48,5 +56,23 @@ public static class Tests
 		var descriptors = _serviceCollection.AddOrangePeeledServices();
 		if (descriptors.Count > 0)
 			throw new Exception($"Assembly was Orange Peeled twice.");
+	}
+
+	[Fact]
+	public static void InheritedInterfaceRegistrations()
+	{
+		var interfaceC = _serviceProvider.GetRequiredService<IInterfaceC>() ??
+			throw new Exception($"No implementation was found for {nameof(IInterfaceC)}.  Expected {nameof(ImplementationClassC)}.");
+		if (interfaceC is not ImplementationClassC)
+			throw new Exception($"{nameof(ServiceProvider)} did not return {nameof(ImplementationClassC)} for {nameof(IInterfaceC)}.");
+	}
+
+	[Fact]
+	public static void InheritedClassRegistrations()
+	{
+		var baseClassC = _serviceProvider.GetRequiredService<BaseClassC>() ??
+			throw new Exception($"No implementation was found for {nameof(BaseClassC)}.  Expected {nameof(ImplementationClassC)}.");
+		if (baseClassC is not ImplementationClassC)
+			throw new Exception($"{nameof(ServiceProvider)} did not return {nameof(BaseClassC)} for {nameof(ImplementationClassC)}.");
 	}
 }
