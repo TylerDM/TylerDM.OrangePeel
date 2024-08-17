@@ -21,6 +21,15 @@ public static class Tests
 	}
 
 	[Fact]
+	public static void RegisterGenericBaseClass()
+	{
+		var service = _serviceProvider.GetRequiredService<GenericBaseClassD<bool>>() ??
+			throw new Exception($"No class registered for {nameof(GenericBaseClassD<bool>)}.");
+		if (service is not ImplementationClassD)
+			throw new Exception($"Incorrect class registered for {nameof(GenericBaseClassD<bool>)}. Expected {nameof(ImplementationClassD)}.");
+	}
+
+	[Fact]
 	public static void LifetimeAccurary()
 	{
 		var descriptorB = _serviceCollection.First(x => x.ServiceType == typeof(ServiceB));
