@@ -1,4 +1,4 @@
-﻿namespace TylerDM.OrangePeel;
+﻿namespace TylerDM.OrangePeel.Internal;
 
 internal record Implementation(Type type, DiAttribute? attribute, Type interfaceType)
 {
@@ -6,7 +6,7 @@ internal record Implementation(Type type, DiAttribute? attribute, Type interface
 	public DiAttribute? Attribute { get; } = attribute;
 	public IReadOnlyCollection<Type> ClosedInterfaceTypes { get; } = getInterfaceTypes(type, interfaceType);
 
-	private static IReadOnlyCollection<Type> getInterfaceTypes(Type implementationType, Type openInterfaceType)
+	private static List<Type> getInterfaceTypes(Type implementationType, Type openInterfaceType)
 	{
 		if (openInterfaceType.IsGenericType == false) return [openInterfaceType];
 

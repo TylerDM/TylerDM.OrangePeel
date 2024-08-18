@@ -1,4 +1,4 @@
-﻿namespace TylerDM.OrangePeel;
+﻿namespace TylerDM.OrangePeel.Internal;
 
 public static class LinqExt
 {
