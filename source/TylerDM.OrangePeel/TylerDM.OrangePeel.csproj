@@ -2,10 +2,11 @@
 
 	<PropertyGroup>
 		<IsPackable>true</IsPackable>
-		<Version>2.0.1</Version>
+		<Version>2.0.2</Version>
 		<RepositoryType>Git</RepositoryType>
 		<NeutralLanguage>en-US</NeutralLanguage>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	</PropertyGroup>
 
   <ItemGroup>
