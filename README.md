@@ -6,29 +6,35 @@ If you're like me you've stopped at some point, looked at your thousands of line
 
 This project aims to, in the smallest way possible, solve these two issues. To start, define the DI configuration on your classes.
 
-    [DependencyInjectable(ServiceLifetime.Transient)]
-    class Car
-    {
-        //...
-    }
+```csharp
+[DependencyInjectable(ServiceLifetime.Transient)]
+class Car
+{
+  //...
+}
+```
 
 Next just call the extension method while building your `ServiceCollection`. This must be done by each assembly which uses Orange Peel.
 
-    public static class MyLibraryStartup
-    {
-        public static void AddMyLibrary(this IServiceCollection services)
-        {
-            services.AddOrangePeeledServices();
-        }
-    }
+```csharp
+public static class MyLibraryStartup
+{
+  public static void AddMyLibrary(this IServiceCollection services)
+  {
+    services.AddOrangePeeledServices();
+  }
+}
+```
 
 If you need to register the class with various interfaces, just reference the types in your attribute's constructor.
 
-    [DependencyInjectable(ServiceLifetime.Singleton, typeof(IEngine), typeof(IMachine))]
-    class BigEngine : IEngine, IMachine
-    {
-        //...
-    }
+```csharp
+[DependencyInjectable(ServiceLifetime.Singleton, typeof(IEngine), typeof(IMachine))]
+class BigEngine : IEngine, IMachine
+{
+  //...
+}
+```
 
 `params` is used here so you can add as many as you want easily.
 
