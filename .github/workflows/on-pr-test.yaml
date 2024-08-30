@@ -14,19 +14,21 @@ jobs:
         working-directory: source/TylerDM.OrangePeel.Tests
 
     steps:
-      - uses: actions/checkout@v4
+      - name: actions/checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: '0'
 
-      - uses: actions/setup-dotnet@v4
+      - name: actions/setup-dotnet
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
-      - name: Restore dependencies
+      - name: dotnet restore
         run: dotnet restore
 
-      - name: Build project
+      - name: dotnet build
         run: dotnet build --configuration Release --no-restore
 
-      - name: Run tests
-        run: dotnet test --no-restore --configuration Release --logger trx
+      - name: dotnet test
+        run: dotnet test --configuration Release --logger trx --no-build
