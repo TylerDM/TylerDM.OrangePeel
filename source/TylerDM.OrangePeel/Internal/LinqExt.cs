@@ -1,8 +1,8 @@
 ﻿namespace TylerDM.OrangePeel.Internal;
 
-public static class LinqExt
+internal static class LinqExt
 {
-	public static IEnumerable<T> SelectFollow<T>(this T root, Func<T, T?> getNext)
+	internal static IEnumerable<T> SelectFollow<T>(this T root, Func<T, T?> getNext)
 	{
 		var next = getNext(root);
 		while (next is not null)

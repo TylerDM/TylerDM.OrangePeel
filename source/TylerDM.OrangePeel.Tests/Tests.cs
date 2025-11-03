@@ -32,13 +32,6 @@ public class Tests(
 	}
 
 	[Fact]
-	public void PreventDoubleRegistration()
-	{
-		var serviceCollection = new ServiceCollection();
-		Assert.Empty(serviceCollection.AddOrangePeeledServices());
-	}
-
-	[Fact]
 	public void InheritedInterfaceRegistrations()
 	{
 		Assert.NotNull(_interfaceC);

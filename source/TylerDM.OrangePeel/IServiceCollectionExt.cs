@@ -2,10 +2,6 @@
 
 public static class IServiceCollectionExt
 {
-	#region fields
-	private static readonly ConcurrentBag<Assembly> _orangePeeledAssemblies = [];
-	#endregion
-
 	#region methods
 	public static IReadOnlyCollection<ServiceDescriptor> AddOrangePeeledServices(this IServiceCollection services)
 	{
@@ -21,17 +17,10 @@ public static class IServiceCollectionExt
 		ArgumentNullException.ThrowIfNull(services);
 		ArgumentNullException.ThrowIfNull(assembly);
 
-		//Make sure we orange peel any given assembly only once.
-		lock (_orangePeeledAssemblies)
-		{
-			if (_orangePeeledAssemblies.Contains(assembly)) return [];
-			_orangePeeledAssemblies.Add(assembly);
-
-			var list = new List<ServiceDescriptor>();
-			list.AddRange(services.registerDirect(assembly));
-			list.AddRange(services.registerIndirect(assembly));
-			return list;
-		}
+		var list = new List<ServiceDescriptor>();
+		list.AddRange(services.registerDirect(assembly));
+		list.AddRange(services.registerIndirect(assembly));
+		return list;
 	}
 	#endregion
 
